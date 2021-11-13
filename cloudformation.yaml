@@ -55,7 +55,7 @@ Resources:
             S3OriginConfig:
               OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
         DefaultRootObject: index.html
-        PriceClass: PriceClass_All
+        PriceClass: PriceClass_200
         ViewerCertificate:
           AcmCertificateArn: 'arn:aws:acm:us-east-1:650892143834:certificate/539082de-dc06-43aa-a2a4-7a741279dfcb'
           MinimumProtocolVersion: TLSv1.2_2021
