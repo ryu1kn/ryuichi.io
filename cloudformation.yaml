@@ -4,7 +4,6 @@ Description: Website on ryuichi.io
 Resources:
   ContentBucket:
     Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
     Properties:
       BucketName: 'ryuichi.io'
       AccessControl: public-read
@@ -14,7 +13,6 @@ Resources:
 
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
-    DeletionPolicy: Retain
     Properties:
       DistributionConfig:
         Aliases:
