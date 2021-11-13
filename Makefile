@@ -2,6 +2,7 @@
 stack_name := ryuichi-io-website
 template_file := cloudformation.yaml
 region := ap-southeast-2
+importing_resource_spec_file := resources-to-import/cloudfront-distribution.json
 
 .PHONY: apply
 apply:
@@ -23,7 +24,7 @@ create-changeset-for-import:
 	aws cloudformation create-change-set --stack-name $(stack_name) \
 		--change-set-type IMPORT \
 		--change-set-name $(changeset_name) \
-		--resources-to-import file://resources-to-import/content-bucket.json \
+		--resources-to-import file://$(importing_resource_spec_file) \
 		--template-body "file://$(template_file)" \
 		--region $(region)
 

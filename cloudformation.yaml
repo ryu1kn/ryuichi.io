@@ -1,5 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Website on ryuichi.io
+
 Resources:
   ContentBucket:
     Type: AWS::S3::Bucket
@@ -10,3 +11,38 @@ Resources:
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: error.html
+
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    DeletionPolicy: Retain
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - 'ryuichi.io'
+        DefaultCacheBehavior:
+          ForwardedValues:
+            Cookies:
+              Forward: all
+            QueryString: true
+          AllowedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          DefaultTTL: 0
+          MaxTTL: 0
+          MinTTL: 0
+          TargetOriginId: S3-ryuichi.io
+          ViewerProtocolPolicy: https-only
+        Enabled: true
+        HttpVersion: http2
+        Origins:
+          - Id: S3-ryuichi.io
+            DomainName: 'ryuichi.io.s3.amazonaws.com'
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+        DefaultRootObject: index.html
+        PriceClass: PriceClass_All
+        ViewerCertificate:
+          AcmCertificateArn: 'arn:aws:acm:us-east-1:650892143834:certificate/539082de-dc06-43aa-a2a4-7a741279dfcb'
+          MinimumProtocolVersion: TLSv1.2_2021
+          SslSupportMethod: sni-only
