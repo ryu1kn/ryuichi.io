@@ -6,7 +6,7 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: 'ryuichi.io'
-      AccessControl: public-read
+      AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: error.html
