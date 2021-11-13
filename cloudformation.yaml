@@ -6,10 +6,26 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: 'ryuichi.io'
-      AccessControl: PublicRead
-      WebsiteConfiguration:
-        IndexDocument: index.html
-        ErrorDocument: error.html
+
+  ContentBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ContentBucket
+      PolicyDocument:
+        Id: PolicyForCloudFrontPrivateContent
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: 's3:GetObject'
+            Principal:
+              AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}"
+            Resource: !Sub "arn:aws:s3:::${ContentBucket}/*"
+
+  CloudFrontOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 'ryuichi.io domain to access its website contents'
 
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
@@ -35,10 +51,9 @@ Resources:
         HttpVersion: http2
         Origins:
           - Id: ryuichi-io-content-bucket
-            DomainName: !Select [1, !Split ['://', !GetAtt ContentBucket.WebsiteURL]]
-            CustomOriginConfig:
-              OriginProtocolPolicy: https-only
-              OriginSSLProtocols: ['TLSv1.2']
+            DomainName: !GetAtt ContentBucket.DomainName
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
         DefaultRootObject: index.html
         PriceClass: PriceClass_All
         ViewerCertificate:
