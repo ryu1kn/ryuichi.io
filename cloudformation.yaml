@@ -1,0 +1,12 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Website on ryuichi.io
+Resources:
+  ContentBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: 'ryuichi.io'
+      AccessControl: public-read
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
