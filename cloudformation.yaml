@@ -16,7 +16,7 @@ Resources:
     Properties:
       DistributionConfig:
         Aliases:
-          - 'ryuichi.io'
+          - !Ref ContentBucket
         DefaultCacheBehavior:
           ForwardedValues:
             Cookies:
@@ -35,7 +35,7 @@ Resources:
         HttpVersion: http2
         Origins:
           - Id: ryuichi-io-content-bucket
-            DomainName: 'ryuichi.io.s3.amazonaws.com'
+            DomainName: !Select [1, !Split ['://', !GetAtt ContentBucket.WebsiteURL]]
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
               OriginSSLProtocols: ['TLSv1.2']
