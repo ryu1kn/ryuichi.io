@@ -29,15 +29,16 @@ Resources:
           DefaultTTL: 0
           MaxTTL: 0
           MinTTL: 0
-          TargetOriginId: S3-ryuichi.io
+          TargetOriginId: ryuichi-io-content-bucket
           ViewerProtocolPolicy: https-only
         Enabled: true
         HttpVersion: http2
         Origins:
-          - Id: S3-ryuichi.io
+          - Id: ryuichi-io-content-bucket
             DomainName: 'ryuichi.io.s3.amazonaws.com'
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
+              OriginSSLProtocols: ['TLSv1.2']
         DefaultRootObject: index.html
         PriceClass: PriceClass_All
         ViewerCertificate:
